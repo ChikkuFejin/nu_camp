@@ -4,8 +4,9 @@ var cors = require('cors')
 require('dotenv').config()
 
 const sequelize = require('./util/database');
-const User = require('./models/user');
-const Camps = require('./models/camps');
+
+const errorHandler=require('./middleware/errorMiddleware')
+const actionLogger=require('./middleware/actionLoggerMiddleware')
 
 const app = express();
 
@@ -24,33 +25,38 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(actionLogger)
 //test route
 app.get('/', (req, res, next) => {
   res.send('Hello World');
 });
 
 
+app.use('/api/v1',require('./routes'))
 
-app.use('/users', require('./routes/users'));
-app.use('/products', require('./routes/product'));
-app.use('/category', require('./routes/category'));
-app.use('/dropdowns', require('./routes/dropdown'));
-app.use('/cart', require('./routes/cart'));
 
-app.use('/auth',require('./routes/auth'))
+// app.use('/users', require('./routes/users'));
+// app.use('/products', require('./routes/product'));
+// app.use('/category', require('./routes/category'));
+// app.use('/dropdowns', require('./routes/dropdown'));
+// app.use('/cart', require('./routes/cart'));
+
+// app.use('/auth',require('./routes/auth'))
 
 //error handling
-app.use((error, req, res, next) => {
-  console.log(error);
-  const status = error.statusCode || 500;
-  const message = error.message;
-  res.status(status).json({ message: message });
-});
+app.use(errorHandler);
+// app.use((error, req, res, next) => {
+//   console.log(error);
+//   const status = error.statusCode || 500;
+//   const message = error.message;
+//   res.status(status).json({ message: message });
+// });
 
 //sync database
 
 
-Camps.sync({force:true});
+// Camps.sync({force:true});
+// require('./models/mastervalues').sync({force:true});
 
 sequelize
   .sync({

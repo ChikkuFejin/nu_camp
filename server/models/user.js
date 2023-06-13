@@ -2,6 +2,7 @@ const {DataTypes} = require('sequelize');
 const db = require('../util/database');
 const bcrypt = require('bcrypt');
 const Config = require('../util/config:js');
+const { UserRole, Role } = require('./rolesAndPermission');
 
 
 
@@ -41,11 +42,10 @@ const User = db.define('User', {
     type: DataTypes.STRING(191),
     allowNull: true
   },
-  role: {
-    type: DataTypes.ENUM('admin', 'user'),
-    allowNull: false,
-    defaultValue: 'user'
-  },
+  // user_role: {
+  //   type: DataTypes.BIGINT.UNSIGNED,
+  //   allowNull: true
+  // },
   provider: {
     type: DataTypes.STRING(191),
     allowNull: true
@@ -84,6 +84,10 @@ const User = db.define('User', {
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 });
+
+User.belongsToMany(Role, { through: 'UserRole' });
+// User.hasMany(UserRole, { foreignKey: 'user_role' });
+
 User.beforeCreate(async (user) => {
     if (user.password) {
       const salt = await bcrypt.genSalt(10);

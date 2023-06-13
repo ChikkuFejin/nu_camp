@@ -47,7 +47,7 @@ const Camps = db.define('Camps', {
     timestamps: false
   });
 
-  Camps.belongsTo(MasterValues, { foreignKey: 'location_id' });
+  Camps.belongsTo(MasterValues, { foreignKey: 'location_id',as:"location" });
   
 
 module.exports=Camps

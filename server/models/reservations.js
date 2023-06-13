@@ -6,7 +6,8 @@ const Config = require('../util/config:js');
 
 const MasterValues=require('./mastervalues')
 const Beds=require('./beds')
-const Category=require('./category')
+const Category=require('./category');
+const Camers = require('./campers');
 
 
 
@@ -17,8 +18,12 @@ const Reservations = db.define('Reservations', {
     allowNull: false,
     autoIncrement: true
   },
-
+  
   bed_id:{
+    type: DataTypes.BIGINT.UNSIGNED,
+    allowNull: false,
+  },
+  camper_id:{
     type: DataTypes.BIGINT.UNSIGNED,
     allowNull: false,
   },
@@ -27,15 +32,15 @@ const Reservations = db.define('Reservations', {
     allowNull: true,
   },
   check_in_date:{
-    type: DataTypes.DATETIME,
+    type: DataTypes.DATE,
     allowNull: false,
   },
   check_out_date:{
-    type: DataTypes.DATETIME,
+    type: DataTypes.DATE,
     allowNull: false,
   },
-  actual_check_out_date:{
-    type: DataTypes.DATETIME,
+  actual_check_out_date:{ 
+    type: DataTypes.DATE,
     allowNull: true,
   },
   check_out_type_id:{
@@ -70,6 +75,7 @@ const Reservations = db.define('Reservations', {
 Reservations.belongsTo(MasterValues, { foreignKey: 'check_out_type_id' })
 Reservations.belongsTo(Beds, { foreignKey: 'bed_id' })
 Reservations.belongsTo(Category, { foreignKey: 'catering_id' })
-module.exports = Camers;
+Reservations.belongsTo(Camers, { foreignKey: 'camper_id' })
+module.exports = Reservations;
 
 

@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const db = require('../util/database');
 
 const Camps=require('./camps.js')
@@ -8,14 +8,16 @@ const RoomCategories=require('./roomCategories.js')
 
 const Rooms = db.define('Rooms', {
     id: {
-      type: Sequelize.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT.UNSIGNED,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
     room_number: {
-        type: Sequelize.STRING(20).UNIQUE,
-        allowNull: false
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        unique: true
+        
       },
     
     camp_id: {
@@ -39,11 +41,11 @@ const Rooms = db.define('Rooms', {
       },
     
     created_at: {
-      type: Sequelize.DATE,
+      type: DataTypes.DATE,
       allowNull: true
     },
     updated_at: {
-      type: Sequelize.DATE,
+      type: DataTypes.DATE,
       allowNull: true
     }
   }, {

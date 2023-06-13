@@ -115,6 +115,7 @@ insert into campers (first_name,gender,date_of_birth,type)
 
 CREATE TABLE reservations (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  camper_id INT NOT NULL,
   bed_id INT NOT NULL,
   catering_id INT NOT NULL,
   check_in_date DATE NOT NULL,
